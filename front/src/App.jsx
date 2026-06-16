@@ -78,6 +78,8 @@ function App() {
             <th className="pb-3">Quantité</th>
             <th className="pb-3">Prix d'achat</th>
             <th className="pb-3">Total investi</th>
+            <th className="pb-3">Valorisation</th>
+<th className="pb-3">Variation</th>
           </tr>
         </thead>
         <tbody>
@@ -88,6 +90,16 @@ function App() {
               <td className="py-4">{stock.quantity}</td>
               <td className="py-4">{stock.buy_price} €</td>
               <td className="py-4">{(stock.buy_price * stock.quantity).toFixed(2)} €</td>
+              <td className="py-4">
+  {(stock.current_price * stock.quantity).toFixed(2)} €
+</td>
+<td className={`py-4 font-bold ${
+  ((stock.current_price - stock.buy_price) / stock.buy_price * 100) >= 0 
+    ? 'text-green-400' 
+    : 'text-red-400'
+}`}>
+  {((stock.current_price - stock.buy_price) / stock.buy_price * 100).toFixed(2)} %
+</td>
             </tr>
           ))}
         </tbody>

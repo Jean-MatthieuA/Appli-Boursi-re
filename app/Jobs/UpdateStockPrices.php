@@ -4,6 +4,8 @@ namespace App\Jobs;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use App\Models\Stock;
+use Illuminate\Support\Facades\Http;
 
 class UpdateStockPrices implements ShouldQueue
 {
@@ -37,6 +39,6 @@ public function handle(): void
         if ($price) {
             $stock->update(['current_price' => $price]);
         }
-    }
+    };
 }
 }
