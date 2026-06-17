@@ -18,6 +18,11 @@ function App() {
       .then(res => res.json())
       .then(data => setStocks(data));
   }
+  function refreshPrices() {
+  fetch("http://localhost:8000/api/refresh-prices", { method: "POST" })
+    .then(res => res.json())
+    .then(() => fetchStocks());
+}
   function fetchQuote(symbol) {
   if (!symbol) return;
   fetch(`http://localhost:8000/api/quote/${symbol}`)
@@ -31,6 +36,12 @@ function App() {
         }));
       }
     });
+}
+
+function handleDelete(id) {
+  if (!confirm("Êtes-vous sûr de vouloir supprimer ce stock ?")) return;
+  fetch(`http://localhost:8000/api/stocks/${id}`, { method: "DELETE" })
+    .then(() => fetchStocks());
 }
 
   function handleChange(e) {
@@ -69,7 +80,9 @@ function App() {
         <input name="quantity" value={form.quantity} onChange={handleChange} placeholder="Quantité" type="number" className="bg-gray-800 rounded px-3 py-2 w-28" />
         <button type="submit" className="bg-green-500 hover:bg-green-400 rounded px-4 py-2 font-bold">Ajouter</button>
       </form>
-
+<button onClick={refreshPrices} className="bg-blue-500 hover:bg-blue-400 rounded px-4 py-2 font-bold">
+  Rafraîchir les prix
+</button>
       <table className="w-full border-collapse">
         <thead>
           <tr className="text-left text-gray-400 border-b border-gray-800">
@@ -79,7 +92,8 @@ function App() {
             <th className="pb-3">Prix d'achat</th>
             <th className="pb-3">Total investi</th>
             <th className="pb-3">Valorisation</th>
-<th className="pb-3">Variation</th>
+            <th className="pb-3">Variation</th>
+            <th className="pb-3"></th>
           </tr>
         </thead>
         <tbody>
@@ -99,6 +113,14 @@ function App() {
     : 'text-red-400'
 }`}>
   {((stock.current_price - stock.buy_price) / stock.buy_price * 100).toFixed(2)} %
+</td>
+<td className="py-4">
+  <button 
+    onClick={() => handleDelete(stock.id)}
+    className="bg-red-500 hover:bg-red-400 rounded px-3 py-1 text-sm font-bold"
+  >
+    Supprimer
+  </button>
 </td>
             </tr>
           ))}
