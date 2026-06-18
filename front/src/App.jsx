@@ -38,6 +38,8 @@ function App() {
     });
 }
 
+
+
 function handleDelete(id) {
   if (!confirm("Êtes-vous sûr de vouloir supprimer ce stock ?")) return;
   fetch(`http://localhost:8000/api/stocks/${id}`, { method: "DELETE" })
@@ -49,7 +51,14 @@ function handleDelete(id) {
   }
 
   function handleSubmit(e) {
-    e.preventDefault();
+  e.preventDefault();
+  
+  if (!form.symbol || !form.name || !form.buy_price || !form.quantity) {
+    alert("Veuillez remplir tous les champs avant d'ajouter un stock.");
+    return;
+  }
+
+
     fetch("http://localhost:8000/api/stocks", {
       method: "POST",
       headers: { "Content-Type": "application/json" },

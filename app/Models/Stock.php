@@ -7,4 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class Stock extends Model
 {
     protected $fillable = ['symbol', 'name', 'buy_price', 'quantity','current_price'];
+  
+    
+public function prices()
+{
+    return $this->hasMany(StockPrice::class);
 }
+
+
+
+    
+}
+

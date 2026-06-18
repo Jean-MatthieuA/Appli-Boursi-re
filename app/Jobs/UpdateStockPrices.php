@@ -6,6 +6,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use App\Models\Stock;
 use Illuminate\Support\Facades\Http;
+use App\Models\StockPrice;
 
 class UpdateStockPrices implements ShouldQueue
 {
@@ -38,6 +39,11 @@ public function handle(): void
 
         if ($price) {
             $stock->update(['current_price' => $price]);
+                StockPrice::create([
+        'stock_id' => $stock->id,
+        'price' => $price,
+        'date' => now()->toDateString(),
+    ]);
         }
     };
 }
