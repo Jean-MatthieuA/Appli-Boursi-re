@@ -17,3 +17,7 @@ Route::post('refresh-prices', function () {
     $job->handle();
     return response()->json(['message' => 'Prix mis à jour']);
 });
+
+Route::get('stocks/{stock}/prices', function (App\Models\Stock $stock) {
+    return $stock->prices()->orderBy('date')->get();
+});

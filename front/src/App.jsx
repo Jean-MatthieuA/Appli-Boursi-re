@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import StockChart from "./StockChart";
 
 function App() {
   const [stocks, setStocks] = useState([]);
@@ -135,6 +136,13 @@ function handleDelete(id) {
           ))}
         </tbody>
       </table>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+      {stocks.map(stock => (
+  <StockChart key={stock.id} stockId={stock.id} symbol={stock.symbol} />
+))}
+
+      </div>
+
     </div>
   );
 }
