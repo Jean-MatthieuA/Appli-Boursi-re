@@ -30,21 +30,30 @@ public function handle(): void
 
     foreach ($stocks as $stock) {
         $response = Http::get("https://www.alphavantage.co/query", [
-            'function' => 'GLOBAL_QUOTE',
+            'function' => 'TIME_SERIES_DAILY',
             'symbol' => $stock->symbol,
             'apikey' => $key,
         ]);
 
-        $price = $response->json()['Global Quote']['05. price'] ?? null;
+        $timeSeries = $response->json()['Time Series (Daily)'] ?? null;
 
-        if ($price) {
-            $stock->update(['current_price' => $price]);
-                StockPrice::create([
-        'stock_id' => $stock->id,
-        'price' => $price,
-        'date' => now()->toDateString(),
-    ]);
-        }
-    };
+        if (!$timeSeries) continue;
+
+        // Prix du jour le plus récent
+        $latestDate = array_key_first($timeSeries);
+        $latest = $timeSeries[$latestDate];
+
+        $stock->update(['current_price' => $latest['4. close']]);
+
+        StockPrice::updateOrCreate(
+            ['stock_id' => $stock->id, 'date' => $latestDate],
+            [
+                'price' => $latest['4. close'],
+                'open'  => $latest['1. open'],
+                'high'  => $latest['2. high'],
+                'low'   => $latest['3. low'],
+            ]
+        );
+    }
 }
 }
