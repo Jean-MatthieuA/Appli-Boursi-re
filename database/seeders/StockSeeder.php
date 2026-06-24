@@ -48,5 +48,8 @@ class StockSeeder extends Seeder
         // Met à jour current_price avec le dernier prix
         $s->update(['current_price' => $price]);
     }
+    $this->command->info('😎 Seed terminé avec succès !');
+    // ou en cas d'erreur attrapée :
+    // $this->command->error('❌ Seed échoué');
 }
 }
