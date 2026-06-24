@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Stock;
+use App\Models\StockPrice;
 
 class StockSeeder extends Seeder
 {
@@ -21,7 +23,7 @@ class StockSeeder extends Seeder
     ];
 
     foreach ($stocks as $stock) {
-        $s = App\Models\Stock::create(array_merge($stock, ['current_price' => null]));
+        $s = Stock::create(array_merge($stock, ['current_price' => null]));
 
         $price = $stock['buy_price'];
         for ($i = 30; $i >= 0; $i--) {
@@ -31,7 +33,7 @@ class StockSeeder extends Seeder
             $high = round(max($open, $close) + rand(0, 2), 2);
             $low = round(min($open, $close) - rand(0, 2), 2);
 
-            App\Models\StockPrice::create([
+            StockPrice::create([
                 'stock_id' => $s->id,
                 'price' => $close,
                 'open' => $open,
