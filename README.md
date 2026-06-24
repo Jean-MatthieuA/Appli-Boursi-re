@@ -65,6 +65,13 @@ npm install
 npm run dev
 ```
 
+### Nommage des commits
+. chore: pour une modification qui n'a pas d'impact (correction class, div structurelle...)
+. feat: pour l'ajout d'une fonctionnalité
+. fix: pour une correction de bug
+. docs: pour la partie documentaire "commentaires, readme..."
+. revert : pour annuler un commit
+
 ### Aperçu
 
 > 📸 *Screenshots à venir*
