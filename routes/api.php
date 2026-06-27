@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\StockController;
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
-
 Route::apiResource('stocks', StockController::class);
 
 
@@ -20,4 +20,12 @@ Route::post('refresh-prices', function () {
 
 Route::get('stocks/{stock}/prices', function (App\Models\Stock $stock) {
     return $stock->prices()->orderBy('date')->get();
+});
+
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/me', [AuthController::class, 'me']);
 });
