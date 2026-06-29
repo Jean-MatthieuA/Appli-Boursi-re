@@ -13,7 +13,10 @@ public function prices()
 {
     return $this->hasMany(StockPrice::class);
 }
-
+public function portfolio()
+{
+    return $this->belongsTo(Portfolio::class);
+}
 
 
     

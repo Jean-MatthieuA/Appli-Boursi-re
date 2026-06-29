@@ -14,6 +14,13 @@ class StockSeeder extends Seeder
      */
    public function run(): void
 {
+    $user = \App\Models\User::first();
+
+    $portfolio = \App\Models\Portfolio::create([
+        'user_id' => $user->id,
+        'name' => 'Mon portefeuille',
+    ]);
+
     $stocks = [
         ['symbol' => 'AAPL', 'name' => 'Apple Inc.', 'buy_price' => 150.00, 'quantity' => 10],
         ['symbol' => 'NVDA', 'name' => 'Nvidia Corporation', 'buy_price' => 220.00, 'quantity' => 5],
@@ -23,7 +30,10 @@ class StockSeeder extends Seeder
     ];
 
     foreach ($stocks as $stock) {
-        $s = Stock::create(array_merge($stock, ['current_price' => null]));
+        $s = \App\Models\Stock::create(array_merge($stock, [
+            'current_price' => null,
+            'portfolio_id' => $portfolio->id,
+        ]));
 
         $price = $stock['buy_price'];
         for ($i = 30; $i >= 0; $i--) {
@@ -33,7 +43,7 @@ class StockSeeder extends Seeder
             $high = round(max($open, $close) + rand(0, 2), 2);
             $low = round(min($open, $close) - rand(0, 2), 2);
 
-            StockPrice::create([
+            \App\Models\StockPrice::create([
                 'stock_id' => $s->id,
                 'price' => $close,
                 'open' => $open,
@@ -45,11 +55,9 @@ class StockSeeder extends Seeder
             $price = $close;
         }
 
-        // Met à jour current_price avec le dernier prix
         $s->update(['current_price' => $price]);
     }
+
     $this->command->info('😎 Seed terminé avec succès !');
-    // ou en cas d'erreur attrapée :
-    // $this->command->error('❌ Seed échoué');
 }
 }
