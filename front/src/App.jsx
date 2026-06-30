@@ -1,7 +1,14 @@
 import { useState, useEffect } from "react";
 import StockChart from "./StockChart";
 
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+
 function App() {
+
+    const [token, setToken] = useState(localStorage.getItem("token"));
+  const [page, setPage] = useState("login");
+
   const [stocks, setStocks] = useState([]);
   const [form, setForm] = useState({
     symbol: "",
@@ -38,6 +45,22 @@ function App() {
       }
     });
 }
+function handleLogin(t) {
+    setToken(t);
+  }
+
+  function handleLogout() {
+    fetch("http://localhost:8000/api/logout", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+    }).then(() => {
+      localStorage.removeItem("token");
+      setToken(null);
+    });
+  }
+
+  if (!token && page === "login") return <Login onLogin={handleLogin} goToRegister={() => setPage("register")} />;
+  if (!token && page === "register") return <Register onLogin={handleLogin} goToLogin={() => setPage("login")} />;
 
 
 
@@ -75,7 +98,12 @@ function handleDelete(id) {
   return (
     <div className="min-h-screen bg-gray-950 text-white p-8">
       <h1 className="text-3xl font-bold mb-8">Mon Portefeuille</h1>
-
+<div className="flex justify-between items-center mb-8">
+  <h1 className="text-3xl font-bold">Mon Portefeuille</h1>
+  <button onClick={handleLogout} className="bg-gray-700 hover:bg-gray-600 rounded px-4 py-2 text-sm">
+    Déconnexion
+  </button>
+</div>
       <form onSubmit={handleSubmit} className="flex gap-4 mb-8">
        <input
   name="symbol"
