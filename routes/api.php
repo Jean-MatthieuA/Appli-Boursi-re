@@ -5,7 +5,7 @@ use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\PortfolioController;
-Route::apiResource('stocks', StockController::class);
+
 
 
 Route::get('quote/{symbol}', function ($symbol) {
@@ -33,4 +33,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
     Route::apiResource('portfolios', PortfolioController::class);
+    Route::apiResource('stocks', StockController::class);
 });
