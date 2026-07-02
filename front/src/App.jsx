@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import StockChart from "./StockChart";
-
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import PortfolioSelector from "./components/PortfolioSelector";
+import AddPortfolioModal from "./components/AddPortfolioModal";
+
 
 function App() {
 
